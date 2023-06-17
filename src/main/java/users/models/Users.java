@@ -24,10 +24,6 @@ public class Users {
         return this.name;
     }
 
-    public String getUserRole() {
-        return this.role;
-    }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -36,8 +32,5 @@ public class Users {
         this.name = name;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
 
 }
