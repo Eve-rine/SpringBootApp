@@ -1,6 +1,8 @@
 package users.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import users.models.User;
 import users.repositories.UserRepository;
@@ -33,4 +35,21 @@ public class UsersController {
     public @ResponseBody Object getUser(@PathVariable Integer id){
          return userRepository.findById(id);
       }
+
+    @PutMapping("/{id}")
+    User updateUser(@RequestBody User newUser, @PathVariable Integer id) {
+
+        User savedUser = userRepository.findById(id)
+                .map(user -> {
+                    user.setName(newUser.getName());
+                    user.setEmail(newUser.getEmail());
+                    return userRepository.save(user);
+                })
+                .orElseGet(() -> {
+                    newUser.setId(Long.valueOf(id));
+                    return userRepository.save(newUser);
+                });
+
+        return savedUser;
+    }
 }
