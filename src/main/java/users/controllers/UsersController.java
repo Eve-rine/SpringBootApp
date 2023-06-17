@@ -24,8 +24,13 @@ public class UsersController {
         return "User Record Added";
     }
 
-    @GetMapping ("/users")
-    List<User> all() {
-        return null;
-    }
+    @GetMapping ("/all")
+    public @ResponseBody Iterable<User> getAllUsers(){
+            return userRepository.findAll();
+        }
+
+    @GetMapping("/{id}")
+    public @ResponseBody Object getUser(@PathVariable Integer id){
+         return userRepository.findById(id);
+      }
 }
