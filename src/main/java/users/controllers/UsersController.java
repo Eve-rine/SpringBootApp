@@ -1,8 +1,10 @@
 package users.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import users.models.User;
 import users.repositories.UserRepository;
@@ -19,11 +21,15 @@ public class UsersController {
     public @ResponseBody String addNewUser (@RequestParam String name, @RequestParam String email){
         //        // @ResponseBody means the returned String is the response, not a view name
 //        // @RequestParam means it is a parameter from the GET or POST request
-        User n = new User();
-        n.setName(name);
-        n.setEmail(email);
-        userRepository.save(n);
-        return "User Record Added";
+        try {
+            User n = new User();
+            n.setName(name);
+            n.setEmail(email);
+            userRepository.save(n);
+            return "User Record Added";
+        } catch (DataIntegrityViolationException e) {
+            return "Email already exists";
+        }
     }
 
     @GetMapping ("/all")
